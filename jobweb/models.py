@@ -1,5 +1,6 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -11,7 +12,23 @@ class Base(db.Model):
     create_at = db.Column(db.DateTime, default=datetime.utcnow)
     upodate_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class User(Base):
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+#Status code: 1-active, 2-inprogress, 3-pass, 4-denied
+applications = db.Table('applications', db.Column('user_id',db.Integer, db.ForeignKey('user.id'), primary_key=True),
+                                        db.Column('job_id', db.Integer, db.ForeignKey('job_detail.id'), primary_key=True),
+                                        db.Column('status', db.Integer),
+                                        db.Column('created_at', db.DateTime, default = datetime.utcnow)
+                                        )
+
+class User(Base,UserMixin):
     __tablename__ = 'user'
 
     JOBSEEKER = 10
@@ -19,7 +36,7 @@ class User(Base):
     ADMIN = 30
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(32), unique=True)
+    username = db.Column(db.String(32), unique=True)
     cellphone = db.Column(db.String(32))
     email = db.Column(db.String(64), unique=True, nullable=False)
     _password = db.Column('password', db.String(256), nullable=False)
@@ -72,12 +89,16 @@ class Job_detail(Base):
     __tablename__ = 'job_detail'
 
     id = db.Column(db.Integer, primary_key=True)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id', ondelete = 'SET NULL'))
+    company = db.relationship('Company', uselist=False)
     jobname = db.Column(db.String(64))
     salary = db.Column(db.String(32), nullable=False)
     workaddress = db.Column(db.String(64))
     education = db.Column(db.String(32))
     company = db.relationship('Company', uselist=False)
-    release_time = db.Column(db.DateTime, default=datetime.now)
+    release_time = db.Column(db.String(64), default=datetime.now)
+    experience = db.Column(db.String(128))
+    desc = db.Column(db.String(256))
 
     def __repr__(self):
         return '<Job_detail {}>'.format(self.jobname)
@@ -87,12 +108,14 @@ class  Jobseeker(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     seekername = db.Column(db.String(32), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete = 'SET NULL'))
     sex = db.Column(db.String(16))
     age = db.Column(db.Integer)
     address =db.Column(db.String(64))
     # 上传的简历
     resume_up = db.Column(db.String(32))
     experience = db.relationship('Experience', uselist=False)
+    resumeId = db.Column(db.Integer, unique=True)
 
 class Experience(Base):
     __tablename__ = 'experience'
