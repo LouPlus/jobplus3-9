@@ -9,7 +9,7 @@ from jobweb.models import db, User, Company, Job_detail
 def iter_company():
 	yield Company(
 		companyname = 'JD',
-		addreww='Beijing',
+		address='Beijing',
 		num = '5000'
 		)
 
@@ -29,8 +29,8 @@ def iter_jobs():
 
 	
 def run():
-	#for company in iter_company():
-	#	db.session.add(company)
+	for company in iter_company():
+		db.session.add(company)
 	for job in iter_jobs():
 		db.session.add(job)
 	try:
