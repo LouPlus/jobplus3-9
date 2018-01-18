@@ -53,7 +53,7 @@ class User(Base,UserMixin):
 
     @password.setter
     def password(self, pw):
-        self._password = gennerate_password_hash(pw)
+        self._password = generate_password_hash(pw)
 
     def check_password(self, password):
         return check_password_hash(self._password, password)
