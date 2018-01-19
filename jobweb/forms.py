@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField,SelectField
 from wtforms.validators import Length, Email, EqualTo, Required
-from jobweb.models import db, User, Company
+from jobweb.models import db, User, Company,Jobseeker
 from wtforms import ValidationError
 
 db = SQLAlchemy()
@@ -74,6 +74,7 @@ class CompanyRegisterForm(Base):
         user.username = self.username.data
         user.email = self.email.data
         user.password = self.password.data
+        user.role = 20
         user.save()
 
 class UserRegisterForm(Base):
@@ -81,6 +82,8 @@ class UserRegisterForm(Base):
 
     def create_user(self):
         user = User()
+        jobseeker = Jobseeker()
+        user.seekerDetail = jobseeker
         user.username = self.username.data
         user.email = self.email.data
         user.password = self.password.data
@@ -107,3 +110,27 @@ class LoginForm(FlaskForm):
         if user and not user.check_password(field.data):
             raise ValidationError('Password incorrect')
 
+    
+    
+
+
+class baseUserForm(FlaskForm):
+    email = StringField('Email', validators=[Required(), Email()])
+    password = PasswordField('Password', validators=[Required(), Length(6, 24)])
+    cellphone = StringField('Phone Number', validators=[Length(10,15)])
+    seekername = StringField('Name', validators=[Required()])
+    desc_edu = StringField('Education')
+    desc_experience = StringField('Experience')
+    submit = SubmitField('submit')
+
+    def saveUser(self, user):
+        # user.email = self.email.data
+        # user.password = self.password.data
+        # user.cellphone = self.cellphone.data
+        self.populate_obj(user)
+        user.save()
+        # user.seekerDetail.seekername = self.seekername.data
+        # user.seekerDetail.desc_experience = self.desc_experience.data
+        # user.seekerDetail.desc_edu = self.desc_edu.data
+        self.populate_obj(user.seekerDetail)
+        user.seekerDetail.save()

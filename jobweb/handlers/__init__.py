@@ -1,5 +1,5 @@
 from .admin import admin
 from .front import front
-from .users import users
+from .user import user
 from .job import job
 from .company import company

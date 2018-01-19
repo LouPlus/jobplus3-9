@@ -49,8 +49,7 @@ class User(Base,UserMixin):
 
     @property
     def password(self):
-        return self.password
-
+        return self._password
     @password.setter
     def password(self, pw):
         self._password = generate_password_hash(pw)
@@ -107,22 +106,20 @@ class  Jobseeker(Base):
     __tablename__ = 'jobseeker'
 
     id = db.Column(db.Integer, primary_key=True)
-    seekername = db.Column(db.String(32), nullable=False)
+    seekername = db.Column(db.String(32))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete = 'SET NULL'))
+    user = db.relationship('User', uselist=False)
+    #email = user.email
+    #password = user.password
     sex = db.Column(db.String(16))
     age = db.Column(db.Integer)
     address =db.Column(db.String(64))
     # 上传的简历
     resume_up = db.Column(db.String(32))
-    experience = db.relationship('Experience', uselist=False)
     resumeId = db.Column(db.Integer, unique=True)
-
-class Experience(Base):
-    __tablename__ = 'experience'
-
-    id = db.Column(db.Integer, primary_key=True)
-    ep_id = db.Column(db.Integer, db.ForeignKey('jobseeker.id'))
     desc_edu = db.Column(db.String(256))
-    desc_job = db.Column(db.String(256))
+    desc_experience = db.Column(db.String(256))
+
+
 
 
