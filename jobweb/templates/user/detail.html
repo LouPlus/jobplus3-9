@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "macros.html" import render_form %}
+
+{% block title %}
+User Profile
+{% endblock %}
+
+{% block body %}
+<div class = "row">
+	<div class="col-md-3" style="padding-top:30px">
+		<h4> User Profile</h4>
+		<div class = "list-group">
+			<a href={{ 'url_for(user.profile)' }} class = 'list-group-item'>Basic Information</a>
+			<a href = "#" class = "list-group-item">Resume</a>
+			<a href = '#' class = "list-group-item"> Application</a>
+		</div>
+	</div>
+
+	<div class = "page-header">
+		<h3>Basic Information</h3>
+	</div>
+
+	<form method = "POST" action = "{{ url_for('user.profile',user_id = user.id) }}">
+		{{ form.csrf_token }}
+		{% for field in form %}
+		{% if field.type == 'CSRFTokenField' %}
+	    {{ "" }}
+
+	    {% elif field.type == 'SubmitField' %}
+	    {{ form.submit(class='btn btn-primary', type='submit', value = "Save") }}
+	    {% else %}
+		<div class="form-group {% if field.errors %}has-error{% endif %}">
+    	{{ field.label }} {{ field(class='form-control') }} <!--will auto generate input tag -->
+        {% if field.errors %}
+          {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+          {% endfor %}
+        {% endif %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </form>
+        {% endblock %}
