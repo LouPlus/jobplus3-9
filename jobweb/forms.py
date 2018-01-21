@@ -97,14 +97,14 @@ class UserRegisterForm(Base):
             raise ValidationError('Email already registered')
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[Required()])
+    email = StringField('Email', validators=[Required(), Email()])
     password = PasswordField('Password', validators=[Required(), Length(6, 24)])
     remember_me = BooleanField('Remember me')
     submit = SubmitField('Submit')
 
-    def validate_username(self, field):
-        if field.data and not User.query.filter_by(username=field.data).first():
-            raise ValidationError('Username does not exist')
+    def validae_email(self, field):
+        if field.data and not User.query.filter_by(email=field.data).first():
+            raise ValidationError('email not register')
     def validate_password(self, field):
         user = User.query.filter_by(username=self.username.data).first()
         if user and not user.check_password(field.data):
