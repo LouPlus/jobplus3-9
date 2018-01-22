@@ -34,9 +34,14 @@ def user_register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         login_user(user, form.remember_me.data)
-        return redirect( url_for('user.profile', user_id = user.id))
+        if user.is_admin: 
+            return redirect(url_for('admin.profile'))   
+        elif use.is_company:
+            return redirect(url_for('company.profile'))
+        else:
+            return redirect( url_for('user.profile', user_id = user.id))
     return render_template('login.html', form = form)
 
 @front.route('/logout', methods=['GET','POST'])
