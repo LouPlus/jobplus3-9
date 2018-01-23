@@ -6,8 +6,9 @@ from jobweb.models import Job_detail, Jobseeker,User
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
-@login_required
+
 @user.route('/<int:user_id>/profile', methods = ['GET','POST'])
+@login_required
 def profile(user_id):
     user = User.query.get_or_404(user_id)
     jobseeker = user.seekerDetail

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
+<div class = 'container'>
 <div class = "horizon">
 	<div class="row">
 		<div class="col-md-9">
@@ -12,7 +13,7 @@
 				</div>
 				<div class = "media-body">
 					<h3> {{ job.title }}</h3>
-					<p> {{ company.company_name }}</p>
+					<p> {{ company.companyname }}</p>
 					<p> {{ job.experience }}</p>
 					<p style = "color:#ff8000;"> {{ job.salary }}</p>
 				</div>
@@ -38,6 +39,6 @@
             </ul>
         </div>
  
-
+</div>
 
 	{% endblock %}
