@@ -38,8 +38,8 @@ def login():
         login_user(user, form.remember_me.data)
         if user.is_admin: 
             return redirect(url_for('admin.profile'))   
-        elif use.is_company:
-            return redirect(url_for('company.profile'))
+        elif user.is_company:
+            return redirect(url_for('company.profile', company_id = user.companydetail.id))
         else:
             return redirect( url_for('user.profile', user_id = user.id))
     return render_template('login.html', form = form)

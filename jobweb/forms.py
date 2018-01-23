@@ -61,6 +61,9 @@ class CompanyRegisterForm(Base):
     def validate_email(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered')
+    def validate_companyName(self, field):
+        if Company.query.filter_by(companyname = field.data).first():
+            raise ValidationError('Company Name already registered')
 
     def create_companyProfile(self):
         user = User()
@@ -68,14 +71,15 @@ class CompanyRegisterForm(Base):
         company.address = self.location.data
         company.num = dict(PEOPLE_CHOICES).get(self.number_of_people.data)
         company.companyname = self.companyName.data
-
-        company.save()
+        company.user = user
         user.companydetail = company
         user.username = self.username.data
         user.email = self.email.data
         user.password = self.password.data
         user.role = 20
         user.save()
+        company.save()
+        
 
 class UserRegisterForm(Base):
     submit = SubmitField('Submit')
@@ -96,6 +100,7 @@ class UserRegisterForm(Base):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Email already registered')
 
+
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Email()])
     password = PasswordField('Password', validators=[Required(), Length(6, 24)])
@@ -106,7 +111,7 @@ class LoginForm(FlaskForm):
         if field.data and not User.query.filter_by(email=field.data).first():
             raise ValidationError('email not register')
     def validate_password(self, field):
-        user = User.query.filter_by(username=self.username.data).first()
+        user = User.query.filter_by(email=self.email.data).first()
         if user and not user.check_password(field.data):
             raise ValidationError('Password incorrect')
 
@@ -134,3 +139,20 @@ class baseUserForm(FlaskForm):
         # user.seekerDetail.desc_edu = self.desc_edu.data
         self.populate_obj(user.seekerDetail)
         user.seekerDetail.save()
+
+class companyForm(FlaskForm):
+    companyname = StringField('companyName')
+    address = StringField('Address')
+    website = StringField('Website')
+    logo = StringField('Logo')
+    desc = StringField('Description')
+    email = StringField('Email', validators=[Required(), Email()])
+    password = PasswordField('Password', validators=[Required(), Length(6,24)])
+    submit = SubmitField('Submit')
+
+    def saveCompany(self, company):
+        self.populate_obj(company)
+        company.save()
+        self.populate_obj(company.user)
+        company.user.save()
+

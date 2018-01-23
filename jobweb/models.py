@@ -72,6 +72,7 @@ class Company(Base):
     id = db.Column(db.Integer, primary_key=True)
     companyname = db.Column(db.String(64), unique=True, index=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', uselist = False)
     website = db.Column(db.String(64))
     # 公司人数
     num = db.Column(db.String(32))
