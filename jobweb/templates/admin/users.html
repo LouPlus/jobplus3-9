@@ -1,0 +1,52 @@
+{% extends "admin/base.html" %}
+{% from "macros.html" import render_pagination %}
+
+{% block title %}
+Admin - users
+{% endblock %}
+
+{% block operation %}
+{% endblock %}
+
+{% block admin %}
+<table class="table">
+  <thred>
+    <tr>
+      <th>ID</th>
+      <th>email</th>
+      <th>role</th>
+      <th>username</th>
+      #<th>状态</th>
+      <th>cellphone</th>
+      #<th>企业名称</th>
+      #<th>企业网站</th>
+      <th>opearation</th>
+    </tr>
+    <tbody>
+      {% for user in pagination.items %}
+      <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.cellphone }}</td>
+        <td>
+        # 编辑 和 禁用 操作
+        <div class="btn-group" role="group">
+          <a href="" type="bottom" class="btn btn-default" title="编辑">
+            <span class="glyphicon gliphicon-pencil" title="编辑" aria-hidden="true"></span>
+          </a>
+          <a href="" type="bottom" class="btn btn-default" title="禁用">
+            <span class="glyphicon gliphicon-off" title="禁用" aria-hiddent="true"></span>
+          </a>
+        </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </thred>
+</table>
+
+# 使用macro渲染分页
+{{ render_pagination(pagination, 'admin.courses') }}
+{{% endblock %}}
