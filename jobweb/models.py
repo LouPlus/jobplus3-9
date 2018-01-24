@@ -11,6 +11,7 @@ class Base(db.Model):
 
     create_at = db.Column(db.DateTime, default=datetime.utcnow)
     upodate_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    isValid = db.Column('isValid', db.Boolean, default = True)
 
     def save(self):
         db.session.add(self)
