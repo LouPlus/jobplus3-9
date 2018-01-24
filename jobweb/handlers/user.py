@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template,flash, request
-from flask_login import login_required
+from flask import Blueprint, render_template,flash, request, abort
+from flask_login import login_required, current_user
 
 from jobweb.forms import baseUserForm
 from jobweb.models import Job_detail, Jobseeker,User
@@ -11,6 +11,8 @@ user = Blueprint('user', __name__, url_prefix='/user')
 @login_required
 def profile(user_id):
     user = User.query.get_or_404(user_id)
+    if current_user != user:
+        abort(404)
     jobseeker = user.seekerDetail
 
     if request.method == 'GET':
