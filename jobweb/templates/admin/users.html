@@ -13,14 +13,14 @@ Admin - users
   <thred>
     <tr>
       <th>ID</th>
-      <th>email</th>
-      <th>role</th>
-      <th>username</th>
+      <th>邮箱</th>
+      <th>用户类型</th>
+      <th>姓名</th>
       #<th>状态</th>
-      <th>cellphone</th>
+      <th>电话</th>
       #<th>企业名称</th>
       #<th>企业网站</th>
-      <th>opearation</th>
+      <th>操作</th>
     </tr>
     <tbody>
       {% for user in pagination.items %}
@@ -48,5 +48,5 @@ Admin - users
 </table>
 
 # 使用macro渲染分页
-{{ render_pagination(pagination, 'admin.courses') }}
+{{ render_pagination(pagination, 'admin.users') }}
 {{% endblock %}}
