@@ -119,26 +119,34 @@ class LoginForm(FlaskForm):
     
 
 
-class baseUserForm(FlaskForm):
+class UserForm(FlaskForm):
+    id = IntegerField('user ID', validators=[Required(), NumberRange(min=1), message="invalid ID"] 
     email = StringField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required(), Length(6, 24)])
-    cellphone = StringField('Phone Number', validators=[Length(10,15)])
+    #password = PasswordField('Password', validators=[Required(), Length(6, 24)])
+    role = IntegerField('Role', validators=[Required()]
     seekername = StringField('Name', validators=[Required()])
-    desc_edu = StringField('Education')
-    desc_experience = StringField('Experience')
+    cellphone = StringField('Phone Number', validators=[Length(10,15)])
+    
+    #desc_edu = StringField('Education')
+    #desc_experience = StringField('Experience')
     submit = SubmitField('submit')
-
-    def saveUser(self, user):
-        # user.email = self.email.data
-        # user.password = self.password.data
-        # user.cellphone = self.cellphone.data
+                        
+    def validate_id(self, field):
+        if not User.query.get(self.id.data):
+            raise ValidationError('user not exist')
+                       
+    def create_user(self):
+        user = User()
         self.populate_obj(user)
-        user.save()
-        # user.seekerDetail.seekername = self.seekername.data
-        # user.seekerDetail.desc_experience = self.desc_experience.data
-        # user.seekerDetail.desc_edu = self.desc_edu.data
-        self.populate_obj(user.seekerDetail)
-        user.seekerDetail.save()
+        db.session.add(user)
+        db.session.commit()
+        return user
+    
+    def update_user(self, user):
+        self.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        return user
 
 class companyForm(FlaskForm):
     companyname = StringField('companyName')
