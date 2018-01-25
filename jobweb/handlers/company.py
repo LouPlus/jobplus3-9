@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash,current_app, abort
-from jobweb.models import Job_detail, Company,User
+from jobweb.models import Job_detail, Company,User, applications
 from flask_login import login_required, current_user
 from jobweb.forms import companyForm, baseUserForm
 
@@ -47,5 +47,19 @@ def jobs():
         return render_template('company/jobs.html', pagination = pagination)
     else: 
         abort(404)
+
+"""@company.route('/application', method=['GET','POST'])
+def application():
+    if current_user.role == 20:
+
+        jobs = Job_detail.query.filter_by(company_id = current_user.companydetail.id).all()
+
+        job_ids = tuple(job.id for job in jobs)
+        applications = applications.query.filter(applications.job_id.in_(job_ids))
+        page = request.args.get('page',default=1, type=int)
+        pagination = applications.paginate(page)
+
+        return render_template('company/allication.html', )"""
+
 
 

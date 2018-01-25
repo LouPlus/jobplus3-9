@@ -156,3 +156,17 @@ class companyForm(FlaskForm):
         self.populate_obj(company.user)
         company.user.save()
 
+class jobForm(FlaskForm):
+    jobname = StringField('Job Name')
+    salary = StringField('Salary')
+    workaddress = StringField('Address')
+    education = StringField('Education')
+    experience = StringField('Experience')
+    desc = StringField('Description')
+    submit = SubmitField('Submit')
+
+    def update_job(self, job):
+        self.populate_obj(job)
+        job.save()
+        return job
+
