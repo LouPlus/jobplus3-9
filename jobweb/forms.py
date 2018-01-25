@@ -117,27 +117,29 @@ class LoginForm(FlaskForm):
 
     
     
-class baseUserForm(FlaskForm): 
+
+
+class baseUserForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Email()])
     password = PasswordField('Password', validators=[Required(), Length(6, 24)])
     cellphone = StringField('Phone Number', validators=[Length(10,15)])
+    seekername = StringField('Name', validators=[Required()])
     desc_edu = StringField('Education')
     desc_experience = StringField('Experience')
-    
     submit = SubmitField('submit')
-    
+
     def saveUser(self, user):
-         # user.email = self.email.data
-         # user.password = self.password.data
-         # user.cellphone = self.cellphone.data
-         self.populate_obj(user)
-         user.save()
-         # user.seekerDetail.seekername = self.seekername.data
-         # user.seekerDetail.desc_experience = self.desc_experience.data
-         # user.seekerDetail.desc_edu = self.desc_edu.data
-         self.populate_obj(user.seekerDetail)
-         user.seekerDetail.save()
-          
+        # user.email = self.email.data
+        # user.password = self.password.data
+        # user.cellphone = self.cellphone.data
+        self.populate_obj(user)
+        user.save()
+        # user.seekerDetail.seekername = self.seekername.data
+        # user.seekerDetail.desc_experience = self.desc_experience.data
+        # user.seekerDetail.desc_edu = self.desc_edu.data
+        self.populate_obj(user.seekerDetail)
+        user.seekerDetail.save()
+
 class companyForm(FlaskForm):
     companyname = StringField('companyName')
     address = StringField('Address')
