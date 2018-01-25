@@ -11,7 +11,7 @@ User Profile
 	<div class="col-md-3" style="padding-top:30px">
 		<h4> Company Profile</h4>
 		<div class = "list-group">
-			<a href="{{ url_for('company.profile', company_id = current_user.companydetail.id) }}" class = 'list-group-item'>Basic Information</a>
+			<a href="{{ url_for('company.profile', company_id = company.id) }}" class = 'list-group-item'>Basic Information</a>
 			<a href = "{{ url_for('company.jobs')}}" class = "list-group-item">Manage Jobs</a>
 			<a href = '#' class = "list-group-item"> Manage Application</a>
 		</div>
@@ -21,25 +21,8 @@ User Profile
 		<h3>Basic Information</h3>
 	</div>
 
-	<form method = "POST" action = "{{ url_for('company.profile',company_id = company.id) }}">
-		{{ form.csrf_token }}
-		{% for field in form %}
-		{% if field.type == 'CSRFTokenField' %}
-	    {{ "" }}
-
-	    {% elif field.type == 'SubmitField' %}
-	    {{ form.submit(class='btn btn-primary', type='submit', value = "Save") }}
-	    {% else %}
-		<div class="form-group {% if field.errors %}has-error{% endif %}">
-    	{{ field.label }} {{ field(class='form-control') }} <!--will auto generate input tag -->
-        {% if field.errors %}
-          {% for error in field.errors %}
-          <span class="help-block">{{ error }}</span>
-          {% endfor %}
-        {% endif %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </form>
+	<div class='col-md-9'>
+		{{ render_form(form, url_for('company.profile', company_id = current_user.companydetail.id))}}
+	</div>
 </div>
         {% endblock %}

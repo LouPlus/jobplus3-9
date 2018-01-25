@@ -11,7 +11,7 @@ class Base(db.Model):
 
     create_at = db.Column(db.DateTime, default=datetime.utcnow)
     upodate_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    isValid = db.Column('isValid', db.Boolean, default = True)
+    isValid = db.Column('isValid', db.Boolean, default=True)
 
     def save(self):
         db.session.add(self)
@@ -27,6 +27,7 @@ applications = db.Table('applications', db.Column('user_id',db.Integer, db.Forei
                                         db.Column('job_id', db.Integer, db.ForeignKey('job_detail.id'), primary_key=True),
                                         db.Column('status', db.Integer),
                                         db.Column('created_at', db.DateTime, default = datetime.utcnow)
+
                                         )
 
 class User(Base,UserMixin):
@@ -44,6 +45,7 @@ class User(Base,UserMixin):
     role = db.Column(db.SmallInteger, default = JOBSEEKER)
     seekerDetail = db.relationship('Jobseeker', uselist=False)
     companydetail = db.relationship('Company', uselist=False)
+    applied_jobs = db.relationship('Job_detail', secondary=applications)
 
     def __repr__(self):
         return '<User:{}>'.format(self.name)
@@ -96,10 +98,10 @@ class Job_detail(Base):
     salary = db.Column(db.String(32), nullable=False)
     workaddress = db.Column(db.String(64))
     education = db.Column(db.String(32))
-    company = db.relationship('Company', uselist=False)
     release_time = db.Column(db.String(64), default=datetime.now)
     experience = db.Column(db.String(128))
     desc = db.Column(db.String(256))
+    applied_user = db.relationship('User', secondary=applications)
 
     def __repr__(self):
         return '<Job_detail {}>'.format(self.jobname)
@@ -121,6 +123,24 @@ class  Jobseeker(Base):
     resumeId = db.Column(db.Integer, unique=True)
     desc_edu = db.Column(db.String(256))
     desc_experience = db.Column(db.String(256))
+
+class delivery(Base):
+    __tablename__ = 'delivery'
+    STATUS_PENDING = 1
+    STATUS_REJECT = 2
+    STATUS_ACCEPT = 3
+    id = db.Column(db.Integer, primary_key=True)
+    job_id = db.Column(db.Integer, db.ForeignKey('job_detail.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    status = db.Column(db.SmallInteger, default=STATUS_PENDING)
+    response = db.Column(db.String(256))
+    @property
+    def user(self):
+        return User.query.get(self.user_id)
+    @property
+    def job(self):
+        return Job_detail.query.get(self.job_id)
+
 
 
 
