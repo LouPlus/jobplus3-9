@@ -6,6 +6,12 @@ Admin - users
 {% endblock %}
 
 {% block operation %}
+
+# 添加按钮： 添加求职者 和 *添加企业 的按钮
+<a href="{{ url_for('admin.create_user') }}" type="buttom" class="btn btn-primary">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+  adduser
+</a>
 {% endblock %}
 
 {% block admin %}

@@ -37,9 +37,9 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         login_user(user, form.remember_me.data)
         if user.is_admin: 
-            return redirect(url_for('admin.profile'))   
+            return redirect(url_for('admin.index'))  # 建立了admin/index.html页面
         elif user.is_company:
-            return redirect(url_for('company.profile', company_id = user.companydetail.id))
+            return redirect(url_for('company.profile'))
         else:
             return redirect( url_for('user.profile', user_id = user.id))
     return render_template('login.html', form = form)

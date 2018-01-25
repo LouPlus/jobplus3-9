@@ -16,9 +16,10 @@ def detail(company_id):
 @login_required
 def profile(company_id):
     company = Company.query.get_or_404(company_id)
-    user = company.user
-    if current_user != user:
-        abort(404)
+
+    if not current_user.is_company:
+        flash("You are not company user", "warning")
+        return redirect(url_for('front.index'))
     if request.method == 'GET':
         form = companyForm(obj = company)
         form.email.data = user.email
