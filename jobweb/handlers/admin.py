@@ -23,12 +23,22 @@ def users():
   )
   return render_template('admin/users.html', pagination=pagination)
 
-@admin.route('/users/adduser', methods=['GET', 'POST'])
+@admin.route('/users/create_user', methods=['GET', 'POST'])
 @admin_required
 def create_user():
-  user = UserForm()
-  if form.validate_on_submit():
+  form = UserRegisterForm()
+  if form.is_submitted():
     form.create_user()
     flash('create user success', 'success') #添加求职者成功
     return redirect(url_for('admin.users'))
-  return render_template('admin/user/adduser.html', form=form)
+  return render_template('admin/create_user.html', form=form)
+
+@admin.route('/users/create_company', methods-["GET","POST"])
+@admin_required
+def create_company():
+  form = CompanyRegisterForm()
+  if form.is_submitted():
+    form.create_companyProfile()
+    flash('create company success','success') #添加企业成功
+    return redirect(url_for('admin.users'))
+  return render_template('admin/create_company.html', form=form)
