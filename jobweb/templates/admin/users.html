@@ -39,11 +39,15 @@ Admin - users
         <td>
         # 编辑 和 禁用 操作
         <div class="btn-group" role="group">
-          <a href="" type="bottom" class="btn btn-default" title="编辑">
+          <a href="{{ url_for('admin.edit_user', user_id=user_id) }}" type="bottom" class="btn btn-default" title="编辑">
             <span class="glyphicon gliphicon-pencil" title="编辑" aria-hidden="true"></span>
           </a>
-          <a href="" type="bottom" class="btn btn-default" title="禁用">
-            <span class="glyphicon gliphicon-off" title="禁用" aria-hiddent="true"></span>
+          <a href="{{ url_for('admin.disable_user, user_id=user_id') }}" type="bottom" class="btn btn-default">
+            {% if user.is_disable %}
+              <span class="glyphicon gliphicon-ok" title="启用" aria-hiddent="true"></span>
+            {% else %}
+              <span class="glyphicon gliphicon-off" title="禁用" aria-hiddent="true"></span>
+            {% endif %}
           </a>
         </div>
         </td>

@@ -117,8 +117,6 @@ class LoginForm(FlaskForm):
 
     
     
-
-
 class baseUserForm(FlaskForm): 
     email = StringField('Email', validators=[Required(), Email()])
     password = PasswordField('Password', validators=[Required(), Length(6, 24)])
@@ -139,7 +137,7 @@ class baseUserForm(FlaskForm):
          # user.seekerDetail.desc_edu = self.desc_edu.data
          self.populate_obj(user.seekerDetail)
          user.seekerDetail.save()
-
+          
 class companyForm(FlaskForm):
     companyname = StringField('companyName')
     address = StringField('Address')
