@@ -42,3 +42,4 @@ def create_company():
     flash('create company success','success') #添加企业成功
     return redirect(url_for('admin.users'))
   return render_template('admin/create_company.html', form=form)
+

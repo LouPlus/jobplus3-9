@@ -8,8 +8,8 @@ front = Blueprint('front', __name__)
 
 @front.route('/')
 def index():
-    jobs = Job_detail.query.filter().limit(10).all()
-    companies = Company.query.filter().limit(10).all()
+    jobs = Job_detail.query.filter_by(isValid=True).limit(10).all()
+    companies = Company.query.filter_by(isValid=True).limit(10).all()
     return render_template('index.html', jobs=jobs, companies = companies)
 
 @front.route('/companyRegister', methods=['GET', 'POST'])
