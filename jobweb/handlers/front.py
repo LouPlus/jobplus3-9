@@ -35,13 +35,18 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        login_user(user, form.remember_me.data)
-        if user.is_admin: 
-            return redirect(url_for('admin.index'))  # 建立了admin/index.html页面
-        elif user.is_company:
-            return redirect(url_for('company.profile', company_id = user.companydetail.id))
+
+        if user.is_disable:
+            flash('User is already disabled')
+            redirect(url_for('front.login'))
         else:
-            return redirect( url_for('user.profile', user_id = user.id))
+            login_user(user, form.remember_me.data)
+            if user.is_admin: 
+                return redirect(url_for('admin.index'))  # 建立了admin/index.html页面
+            elif user.is_company:
+                return redirect(url_for('company.profile'))
+            else:
+                return redirect( url_for('user.profile', user_id = user.id))
     return render_template('login.html', form = form)
 
 @front.route('/logout', methods=['GET','POST'])

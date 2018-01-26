@@ -33,6 +33,7 @@ def create_user():
     return redirect(url_for('admin.users'))
   return render_template('admin/create_user.html', form=form)
 
+
 @admin.route('/users/create_company', methods=["GET","POST"])
 @admin_required
 def create_company():
@@ -43,3 +44,34 @@ def create_company():
     return redirect(url_for('admin.users'))
   return render_template('admin/create_company.html', form=form)
 
+@admin.route('/users/<int:user_id>/edit', methods=['GET', 'POST'])
+@admin_required
+def edit_user(user_id):
+    user = User.query.get_or_404(user_id)
+    if user.is_company:
+        form = CompanyEditForm(obj=user)
+    else:
+        form = UserEditForm(obj=user)
+    if form.validate_on_submit():
+        form.update(user)
+        flask('edit success', 'success')
+        return redirect(url_for('admin.users'))
+    if user.is_company:
+        form.website.data = user.companydetail.website
+        form.desc.data = user.companydetail.desc
+    return render_template('admin/edit_user.html', form=form, user=user)
+
+
+@admin.route('/users/<int:user_id>/disable', methods=['GET','POST'])
+@admin_required
+def disable_user(user_id):
+    user = User.query.get_or_404(user_id)
+    if user.is_diable:
+        user.is_disable = False
+        flash('enable user', 'success')
+    else:
+        user.is_disable = True
+        flask('disable user', 'success')
+    db.session.add(user)
+    db.session.commit()
+    return redirect(url_for('admin.users'))
