@@ -46,7 +46,51 @@ class Base(FlaskForm):
     password = PasswordField('Password', validators=[Required(), Length(6, 24)])
     repeat_password = PasswordField('Password again', validators=[Required(), EqualTo('password')])
 
-    
+
+# cannot extends from Base
+# Because we don't need repeated_password here
+class UserEditForm(FlaskForm):
+    email = StringField('Email', validators=[Required(), Email()])
+    password = PasswordField('password')
+    username = StringField('name'
+    phone = StringField('phone number')
+    submit = SubmitField('submit')
+
+    def update(self, user):
+        self.populate_obj(user)
+        if self.password.data:
+            user.password = self.password.data
+        db.session.add(user)
+        db.session.commit()
+
+
+class CompanyEditForm(FlaskForm):
+    username = StringField('company name')
+    email = StringField('email', validators=[Required(), Email()])
+    password = PasswordField('password')
+    cellphone = StringField('phone number')
+    website = StringField('company site', validators=[Length(0, 64)])
+    desc = StrinField('description', validators=[Length(0, 100)])
+    submit = SubmitField('submit')
+
+    def update(self, company):
+        company.username = self.username.data
+        company.email = self.email.data
+        if self.password.data:
+            company.password = self.password.data
+        if company.detail:
+            detail = company.detail
+        else:
+            detail = CompanyDetail()
+            detail.user_id = company.id
+        detail.website = self.website.data
+        deatil.desc = self.desc.data
+        db.session.add(company)
+        db.session.add(detail)
+        db.session.commit()
+            
+
+
 
 class CompanyRegisterForm(Base):
 
