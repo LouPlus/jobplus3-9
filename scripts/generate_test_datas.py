@@ -5,7 +5,11 @@ from random import randint
 from jobweb.models import db, User, Company, Job_detail
 
 
-
+def iter_user():
+	yield User(
+		username = 'JD',
+		email = 'JD@test.com',
+		password = '123456')
 def iter_company():
 	yield Company(
 		companyname = 'JD',
@@ -29,8 +33,11 @@ def iter_jobs():
 
 	
 def run():
+	"""for user in iter_user():
+		db.session.add(user)
 	for company in iter_company():
-		db.session.add(company)
+		company.user_id = 2
+		db.session.add(company) """
 	for job in iter_jobs():
 		db.session.add(job)
 	try:

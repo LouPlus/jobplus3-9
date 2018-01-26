@@ -35,6 +35,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+
         if user.is_disable:
             flash('User is already disabled')
             redirect(url_for('front.login'))
