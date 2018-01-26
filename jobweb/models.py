@@ -10,7 +10,7 @@ class Base(db.Model):
     __abstract__ = True
 
     create_at = db.Column(db.DateTime, default=datetime.utcnow)
-    upodate_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    update_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     isValid = db.Column('isValid', db.Boolean, default=True)
 
     def save(self):
@@ -132,6 +132,7 @@ class delivery(Base):
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job_detail.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     status = db.Column(db.SmallInteger, default=STATUS_PENDING)
     response = db.Column(db.String(256))
     @property
@@ -140,6 +141,9 @@ class delivery(Base):
     @property
     def job(self):
         return Job_detail.query.get(self.job_id)
+    @property
+    def company(self):
+        return Company.query.get(self.company_id)
 
 
 

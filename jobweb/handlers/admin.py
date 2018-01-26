@@ -33,7 +33,7 @@ def create_user():
     return redirect(url_for('admin.users'))
   return render_template('admin/create_user.html', form=form)
 
-@admin.route('/users/create_company', methods-["GET","POST"])
+@admin.route('/users/create_company', methods=["GET","POST"])
 @admin_required
 def create_company():
   form = CompanyRegisterForm()

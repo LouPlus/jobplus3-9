@@ -63,7 +63,7 @@
         <div class = "list-group">
             <a href="{{ url_for('company.profile', company_id = company.id) }}" class = 'list-group-item'>Basic Information</a>
             <a href = "{{ url_for('company.jobs') }}" class = "list-group-item">Manage Jobs</a>
-            <a href = '#' class = "list-group-item"> Manage Application</a>
+            <a href = '{{ url_for("company.application") }}' class = "list-group-item"> Manage Application</a>
         </div>
         </div>
 {% endmacro %}
