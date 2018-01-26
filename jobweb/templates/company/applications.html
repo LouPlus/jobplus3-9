@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% from "macros.html" import render_pagination %}
-{% from "macros.html" import render_company_task_bar %}
+{% from 'macros.html' import render_company_task_bar %}
 
 {% block body %}
 	<div class = 'container-fluid'>
@@ -10,7 +10,7 @@
 	     {{ render_company_task_bar(company) }}
 
 	<div class = "page-header">
-		<h3>Manage Jobs</h3>
+		<h3>Manage Application</h3>
 	</div>
 	<div style='margin-bottom;15px;'>
 		<a href = '#' type='button', class='btn btn-sm btn-primary'>
@@ -21,27 +21,31 @@
 			<thread>
 				<tr>
 					<th>ID</th>
-					<th>Name</th>
-					<th>Online?</th>
+					<th>Job Name</th>
+					<th>Location</th>
+					<th>Applicant Name</th>
+					<th>Time</th>
+					<th>Status</th>
 					<th>Operation</th>
 				</tr>
 			</thread>
 			<tbody>
-				{% for job in pagination.items %}
+				{% for application in pagination.items %}
 				<tr>
-					<td> {{ job.id }}</td>
-					<td><a href='{{ url_for("job.detail", job_id=job.id) }}'>{{ job.jobname }}<a></td>
-					<td> {{ job.isValid }}</td>
+					<td> {{ application.id }}</td>
+					<td><a href='{{ url_for("job.detail", job_id=application.job.id) }}'>{{ application.job.jobname }}<a></td>
+					<td> {{ application.job.workaddress }}</td>
+					<td> {{ application.user.seekerDetail.seekername }}
+					<td> {{ application.create_at}}</td>
+					<td> {% if application.status == 1 %}Pending{% elif application.status == 2 %}Pass{%else%}Reject{%endif%}</td>
+
 					<td>
 					<div class='dropdown'>
 						<p id='dropdownMenu1' data-toggle='dropdown'><span class='caret'></span></p>
 						<ul class= 'dropdown-menu' aria-labelledby='dropdownMenu1'>
-							{% if job.isValid == True %}
-							<li><a href='{{ url_for("job.offline", job_id = job.id) }}'>Offline</a></li>
-							{% else %}
-							<li><a href='{{ url_for("job.online", job_id = job.id) }}'>Online</a></li>
-							{% endif %}
-							<li><a href="{{ url_for('job.edit', job_id = job.id) }}">Edit</a></li>
+							<li><a href='#'>Pass</a></li>
+							<li><a href='#'>Reject</a></li>
+							<li><a hrf='#'>View Resume</a></li>
 							<!--<li><a href='#'>Delete</a></li> -->
 						</ul>
 					</div>
@@ -54,4 +58,3 @@
 </div>
 {{ render_pagination(pagination, 'company.jobs') }} 
 {% endblock %}
-
