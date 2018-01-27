@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash,current_app, abort
-from jobweb.models import Job_detail, Company,User, applications, delivery
+from flask import Blueprint, render_template, request, flash,current_app, abort, redirect, url_for
+from jobweb.models import Job_detail, Company,User, applications, Delivery
 from flask_login import login_required, current_user
 from jobweb.forms import companyForm, baseUserForm
 
@@ -54,8 +54,26 @@ def application():
     if current_user.role == 20:
         company = current_user.companydetail
         page = request.args.get('page',default=1, type=int)
-        pagination = delivery.query.filter_by(company_id=current_user.companydetail.id).paginate(page=page, per_page=current_app.config['INDEX_PER_PAGE'], error_out=False)
+        pagination = Delivery.query.filter_by(company_id=current_user.companydetail.id).paginate(page=page, per_page=current_app.config['INDEX_PER_PAGE'], error_out=False)
         return render_template('company/applications.html', pagination = pagination, company = company)
+
+@company.route('/<int:delivery_id>/pass', methods=['GET','POST'])
+def accept(delivery_id):
+    delivery = Delivery.query.get_or_404(delivery_id)
+    delivery.status = 3
+    delivery.save()
+    flash('Sucessful', 'success')
+    return redirect(url_for('company.application'))
+
+@company.route('/<int:delivery_id>/reject', methods=['GET','POST'])
+def reject(delivery_id):
+    delivery = Delivery.query.get_or_404(delivery_id)
+    delivery.status = 2
+    delivery.save()
+    flash('Sucessful', 'success')
+    return redirect(url_for('company.application'))
+
+
        
 
 

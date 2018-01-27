@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% from "macros.html" import render_form %}
+{% from 'macros.html' import render_company_task_bar %}
 
 {% block title %}
 User Profile
@@ -8,14 +9,7 @@ User Profile
 {% block body %}
 <div class = 'container'>
 <div class = "row">
-	<div class="col-md-3" style="padding-top:30px">
-		<h4> Company Profile</h4>
-		<div class = "list-group">
-			<a href="{{ url_for('company.profile', company_id = company.id) }}" class = 'list-group-item'>Basic Information</a>
-			<a href = "{{ url_for('company.jobs')}}" class = "list-group-item">Manage Jobs</a>
-			<a href = '#' class = "list-group-item"> Manage Application</a>
-		</div>
-	</div>
+	{{ render_company_task_bar(company) }}
 
 	<div class = "page-header">
 		<h3>Basic Information</h3>

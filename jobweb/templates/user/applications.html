@@ -1,29 +1,25 @@
 {% extends 'base.html' %}
 {% from "macros.html" import render_pagination %}
-{% from 'macros.html' import render_company_task_bar %}
+{% from 'macros.html' import render_user_task_bar %}
 
 {% block body %}
 	<div class = 'container-fluid'>
 	</div>
 	<div class = 'container'>
 		<div class = "row">
-	     {{ render_company_task_bar(company) }}
+	     {{ render_user_task_bar(user) }}
 
 	<div class = "page-header">
-		<h3>Manage Application</h3>
+		<h3>View Application</h3>
 	</div>
-	<div style='margin-bottom;15px;'>
-		<a href = '#' type='button', class='btn btn-sm btn-primary'>
-			<span class='glyphicon glyphicon-plus'></span>Add job</a>
-		</div>
 		<div class='col-md-9'>
 		<table class='table table-hover'>
 			<thread>
 				<tr>
-					<th>ID</th>
+					
 					<th>Job Name</th>
 					<th>Location</th>
-					<th>Applicant Name</th>
+					<th>Company Name</th>
 					<th>Time</th>
 					<th>Status</th>
 					<th>Operation</th>
@@ -32,10 +28,9 @@
 			<tbody>
 				{% for application in pagination.items %}
 				<tr>
-					<td> {{ application.id }}</td>
 					<td><a href='{{ url_for("job.detail", job_id=application.job.id) }}'>{{ application.job.jobname }}<a></td>
 					<td> {{ application.job.workaddress }}</td>
-					<td> {{ application.user.seekerDetail.seekername }}
+					<td> {{ application.user.companydetail.companyname }}
 					<td> {{ application.create_at}}</td>
 					<td> {% if application.status == 1 %}Pending{% elif application.status == 2 %}Reject{%else%}Pass{%endif%}</td>
 
@@ -43,9 +38,8 @@
 					<div class='dropdown'>
 						<p id='dropdownMenu1' data-toggle='dropdown'><span class='caret'></span></p>
 						<ul class= 'dropdown-menu' aria-labelledby='dropdownMenu1'>
-							<li><a href='{{ url_for("company.reject",delivery_id = application.id) }}'>Reject</a></li>
-							<li><a href='{{ url_for("company.accept", delivery_id = application.id) }}'>Pass</a></li>
-							<li><a href='{{ application.user.seekerDetail.resume_up }}'>View Resume</a></li>
+							<li><a href='{{ url_for("company.detail",company_id = application.company.id) }}'>Contact Company</a></li>
+							<li><a href='{{ user.seekerDetail.resume_up }}'>View Resume</a></li>
 							<!--<li><a href='#'>Delete</a></li> -->
 						</ul>
 					</div>
