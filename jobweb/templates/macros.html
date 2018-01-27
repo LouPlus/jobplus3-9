@@ -1,5 +1,5 @@
 {% macro render_form(form,url) %}
-<form method="POST" action="{{ url }} ">
+<form method="POST" enctype="multipart/form-data" action="{{ url }} ">
 	{{ form.csrf_token }}
 	{% for field in form %}
 	{% if field.type == 'CSRFTokenField' %}
@@ -66,4 +66,15 @@
             <a href = '{{ url_for("company.application") }}' class = "list-group-item"> Manage Application</a>
         </div>
         </div>
+{% endmacro %}
+
+{% macro render_user_task_bar(user) %}
+<div class="col-md-3" style="padding-top:30px">
+        <h4> User Profile</h4>
+        <div class = "list-group">
+            <a href="{{ url_for('user.profile', user_id = user.id) }}" class = 'list-group-item'>Basic Information</a>
+            <a href = "{{ url_for('user.resume', user_id=user.id) }}" class = "list-group-item">Resume</a>
+            <a href = '#' class = "list-group-item"> Application</a>
+        </div>
+    </div>
 {% endmacro %}

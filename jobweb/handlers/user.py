@@ -23,6 +23,7 @@ def profile(user_id):
         form.seekername.data = jobseeker.seekername
         form.desc_edu.data = jobseeker.desc_edu
         form.desc_experience.data = jobseeker.desc_experience
+        form.resume_up.data = jobseeker.resume_up
     else:
         form = baseUserForm()
 
@@ -30,6 +31,13 @@ def profile(user_id):
          form.saveUser(user)
          flash("Success!", 'success')
     return render_template('user/detail.html', user=user, form = form)
+
+@user.route('/<int:user_id>/resume', methods=['GET','POST'])
+@login_required
+def resume(user_id):
+    user = User.query.get_or_404(user_id)
+    jobseeker = user.seekerDetail
+    return render_template('/user/resume.html', jobseeker=jobseeker, user = user)
 
 
 

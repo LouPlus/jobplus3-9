@@ -2,9 +2,12 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField,SelectField
+from flask_wtf.file import FileField, FileRequired
 from wtforms.validators import Length, Email, EqualTo, Required
 from jobweb.models import db, User, Company,Jobseeker
 from wtforms import ValidationError
+import os
+from flask import url_for
 
 db = SQLAlchemy()
 
@@ -52,7 +55,7 @@ class Base(FlaskForm):
 class UserEditForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Email()])
     password = PasswordField('password')
-    username = StringField('name'
+    username = StringField('name')
     phone = StringField('phone number')
     submit = SubmitField('submit')
 
@@ -70,7 +73,7 @@ class CompanyEditForm(FlaskForm):
     password = PasswordField('password')
     cellphone = StringField('phone number')
     website = StringField('company site', validators=[Length(0, 64)])
-    desc = StrinField('description', validators=[Length(0, 100)])
+    desc = StringField('description', validators=[Length(0, 100)])
     submit = SubmitField('submit')
 
     def update(self, company):
@@ -126,6 +129,7 @@ class CompanyRegisterForm(Base):
         
 
 class UserRegisterForm(Base):
+    seekername = StringField('Real Name', validators=[Required()])
     submit = SubmitField('Submit')
 
     def create_user(self):
@@ -135,7 +139,9 @@ class UserRegisterForm(Base):
         user.username = self.username.data
         user.email = self.email.data
         user.password = self.password.data
+        jobseeker.seekername = self.seekername.data
         user.save()
+        jobseeker.save()
 
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
@@ -167,20 +173,30 @@ class baseUserForm(FlaskForm):
     cellphone = StringField('Phone Number', validators=[Length(10,15)])
     desc_edu = StringField('Education')
     desc_experience = StringField('Experience')
+    seekername = StringField('RealName')
+    resume_up = FileField('Resume', validators=[FileRequired()])
     
     submit = SubmitField('submit')
+
+    def upload_resume(self):
+        f = self.resume_up.data
+        filename = self.seekername.data + '.pdf'
+        f.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),'static','resumes',filename))
+        return filename
     
     def saveUser(self, user):
-         # user.email = self.email.data
-         # user.password = self.password.data
-         # user.cellphone = self.cellphone.data
-         self.populate_obj(user)
-         user.save()
-         # user.seekerDetail.seekername = self.seekername.data
-         # user.seekerDetail.desc_experience = self.desc_experience.data
-         # user.seekerDetail.desc_edu = self.desc_edu.data
-         self.populate_obj(user.seekerDetail)
-         user.seekerDetail.save()
+          user.email = self.email.data
+          user.password = self.password.data
+          user.cellphone = self.cellphone.data
+         #self.populate_obj(user)
+          user.save()
+          user.seekerDetail.seekername = self.seekername.data
+          user.seekerDetail.desc_experience = self.desc_experience.data
+          user.seekerDetail.desc_edu = self.desc_edu.data
+          filename = self.upload_resume()
+          user.seekerDetail.resume_up = url_for('static',filename=os.path.join('resumes',filename))
+         #self.populate_obj(user.seekerDetail)
+          user.seekerDetail.save()
           
 class companyForm(FlaskForm):
     companyname = StringField('companyName')

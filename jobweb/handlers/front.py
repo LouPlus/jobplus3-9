@@ -36,7 +36,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
 
-        if user.is_disable:
+        if not user.isValid:
             flash('User is already disabled')
             redirect(url_for('front.login'))
         else:
@@ -44,7 +44,7 @@ def login():
             if user.is_admin: 
                 return redirect(url_for('admin.index'))  # 建立了admin/index.html页面
             elif user.is_company:
-                return redirect(url_for('company.profile'))
+                return redirect(url_for('company.profile', company_id = user.companydetail.id))
             else:
                 return redirect( url_for('user.profile', user_id = user.id))
     return render_template('login.html', form = form)
