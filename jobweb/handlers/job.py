@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, current_app, flash, redirect, url_for
-from jobweb.models import Job_detail, Company
+from jobweb.models import Job_detail, Company, Delivery
 from flask_login import login_required, current_user
 from jobweb.forms import jobForm
 
@@ -44,3 +44,21 @@ def online(job_id):
 	job.save()
 	flash('update Sucessful', 'success')
 	return redirect(url_for('company.jobs'))
+
+
+@job.route('/<int:job_id>/apply', methods=['GET'])
+@login_required
+def apply(job_id):
+	job = Job_detail.query.get_or_404(job_id)
+	delivery = Delivery()
+	delivery.job_id = job_id
+	delivery.company_id = job.company_id
+	delivery.user_id = current_user.id
+	delivery.resume_up = current_user.seekerDetail.resume_up
+	delivery.save()
+	current_user.applied_jobs.append(job)
+	job.applied_user.append(current_user)
+	current_user.save()
+	job.save()
+	flash('Apply successful', 'success')
+	return redirect(url_for('job.detail', job_id = job_id))

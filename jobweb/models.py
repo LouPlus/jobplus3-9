@@ -124,7 +124,7 @@ class  Jobseeker(Base):
     desc_edu = db.Column(db.String(256))
     desc_experience = db.Column(db.String(256))
 
-class delivery(Base):
+class Delivery(Base):
     __tablename__ = 'delivery'
     STATUS_PENDING = 1
     STATUS_REJECT = 2
@@ -135,6 +135,7 @@ class delivery(Base):
     company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     status = db.Column(db.SmallInteger, default=STATUS_PENDING)
     response = db.Column(db.String(256))
+    resume_up = db.Column(db.String(256))
     @property
     def user(self):
         return User.query.get(self.user_id)

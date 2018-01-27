@@ -20,9 +20,13 @@
 			</div>
 		</div>
         <div class = "col-md-3" style = "padding-top:15px;">
-        	<a href = "#" type = "button" class = "btn btn-success">
+        	{% if job not in current_user.applied_jobs %}
+        	<a href = "{{ url_for('job.apply', job_id = job.id) }}" type = "button" class = "btn btn-success">
         		Apply
         	</a>
+        	{% else %}
+        	<button type='button' class='btn btn-secondary btn-lg' disabled>Already Applied</button>
+        	{% endif %}
         </div>
     </div>
 </div>

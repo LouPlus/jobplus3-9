@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template,flash, request, abort
+from flask import Blueprint, render_template,flash, request, abort, current_app
 from flask_login import login_required, current_user
 
 from jobweb.forms import baseUserForm
-from jobweb.models import Job_detail, Jobseeker,User
+from jobweb.models import Job_detail, Jobseeker,User, Delivery
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
@@ -38,6 +38,14 @@ def resume(user_id):
     user = User.query.get_or_404(user_id)
     jobseeker = user.seekerDetail
     return render_template('/user/resume.html', jobseeker=jobseeker, user = user)
+
+@user.route('/<int:user_id>/application', methods=['GET'])
+@login_required
+def application(user_id):
+    user = User.query.get_or_404(user_id)
+    page = request.args.get('page',default=1, type=int)
+    pagination = Delivery.query.filter_by(user_id=current_user.id).paginate(page=page, per_page=current_app.config['INDEX_PER_PAGE'], error_out=False)
+    return render_template('user/applications.html', pagination = pagination, user = user)
 
 
 
