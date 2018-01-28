@@ -12,7 +12,7 @@
 	<ul class="nav nav-tabs padding-top">
 		<li class="active"><a href = "">Company Profile</a>
 		</li>
-		<li><a href=""> Current Jobs </a></li>
+		<li><a href="{{ url_for('company.current_jobs', company_id = company.id) }}"> Current Jobs </a></li>
 	</ul>
 	<div class = "page-header">
 		<h4><b>About us</b></h4>
