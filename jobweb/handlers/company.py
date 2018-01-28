@@ -9,8 +9,18 @@ company = Blueprint('company', __name__, url_prefix='/companies')
 @company.route('/<int:company_id>')
 def detail(company_id):
     company = Company.query.get_or_404(company_id)
-    jobs = Job_detail.query.filter_by(company_id = company.id)
+    jobs = Job_detail.query.filter_by(company_id = company.id, isValid=True)
     return render_template('company/detail.html', jobs=jobs, company=company)
+
+@company.route('/<int:company_id>/jobs')
+def current_jobs(company_id):
+    page = request.args.get('page', default=1, type=int)
+    company = Company.query.get_or_404(company_id)
+    jobs = Job_detail.query.filter_by(company_id = company.id, isValid=True)
+    pagination = jobs.paginate(page=page, per_page=current_app.config['INDEX_PER_PAGE'],error_out=False)
+    return render_template('company/current_jobs.html', pagination=pagination)
+
+
 
 @company.route('/profile/<int:company_id>', methods = ['GET', 'POST'])
 @login_required
@@ -35,7 +45,8 @@ def profile(company_id):
 @company.route('/all')
 def all():
     page = request.args.get('page', default=1, type=int)
-    pagination = Company.query.paginate(page = page, per_page = current_app.config['INDEX_PER_PAGE'], error_out = False)
+    company = Company.query.filter_by(isValid=True)
+    pagination = company.paginate(page = page, per_page = current_app.config['INDEX_PER_PAGE'], error_out = False)
     return render_template('company/all.html', pagination = pagination)
 
 @company.route('/jobs', methods = ['GET','POST'])
@@ -50,6 +61,7 @@ def jobs():
         abort(404)
 
 @company.route('/application', methods=['GET','POST'])
+@login_required
 def application():
     if current_user.role == 20:
         company = current_user.companydetail
@@ -58,16 +70,22 @@ def application():
         return render_template('company/applications.html', pagination = pagination, company = company)
 
 @company.route('/<int:delivery_id>/pass', methods=['GET','POST'])
+@login_required
 def accept(delivery_id):
     delivery = Delivery.query.get_or_404(delivery_id)
+    if not current_user.id == delivery.company_id:
+        abort(404)
     delivery.status = 3
     delivery.save()
     flash('Sucessful', 'success')
     return redirect(url_for('company.application'))
 
 @company.route('/<int:delivery_id>/reject', methods=['GET','POST'])
+@login_required
 def reject(delivery_id):
     delivery = Delivery.query.get_or_404(delivery_id)
+    if not current_user.id == delivery.company_id:
+        abort(404)
     delivery.status = 2
     delivery.save()
     flash('Sucessful', 'success')
