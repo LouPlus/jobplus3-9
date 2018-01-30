@@ -42,7 +42,7 @@
     <li class="{% if active=='company'%}active{% endif %}"><a href="{{ url_for('company.all') }}">Company</a></li>
     <li><a href="#">Admin</a></li>
     {% if current_user.is_authenticated and current_user.is_admin %}
-    <li class="{% if active=='admin'%}active{% endif %}"><a href="{{ url_for('admin.index') }}">admin manage</a></li>
+    <li class="{% if active=='admin'%}active{% endif %}"><a href="{{ url_for('admin.admin_index') }}">admin manage</a></li>
     {% endif %}
   </ul>
     
