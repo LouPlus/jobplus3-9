@@ -4,8 +4,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField,SelectField
 from flask_wtf.file import FileField, FileRequired
 from wtforms.validators import Length, Email, EqualTo, Required
-from jobweb.models import db, User, Company,Jobseeker
+from jobweb.models import db, User, Company,Jobseeker, Job_detail
 from wtforms import ValidationError
+from flask_login import current_user
 import os
 from flask import url_for
 
@@ -153,7 +154,7 @@ class UserRegisterForm(Base):
 
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required(), Length(6, 24)])
+    password = PasswordField('Password')
     remember_me = BooleanField('Remember me')
     submit = SubmitField('Submit')
 
@@ -169,7 +170,7 @@ class LoginForm(FlaskForm):
     
 class baseUserForm(FlaskForm): 
     email = StringField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required(), Length(6, 24)])
+    password = PasswordField('Password')
     cellphone = StringField('Phone Number', validators=[Length(10,15)])
     desc_edu = StringField('Education')
     desc_experience = StringField('Experience')
@@ -186,7 +187,8 @@ class baseUserForm(FlaskForm):
     
     def saveUser(self, user):
           user.email = self.email.data
-          user.password = self.password.data
+          if self.password.data:
+             user.password = self.password.data
           user.cellphone = self.cellphone.data
          #self.populate_obj(user)
           user.save()
@@ -205,13 +207,16 @@ class companyForm(FlaskForm):
     logo = StringField('Logo')
     desc = StringField('Description')
     email = StringField('Email', validators=[Required(), Email()])
-    password = PasswordField('Password', validators=[Required(), Length(6,24)])
+    password = PasswordField('Password')
     submit = SubmitField('Submit')
 
     def saveCompany(self, company):
         self.populate_obj(company)
         company.save()
-        self.populate_obj(company.user)
+        company.user.email = self.email.data
+        if self.password.data:
+            company.user.password = self.password.data
+
         company.user.save()
 
 class jobForm(FlaskForm):
@@ -227,4 +232,14 @@ class jobForm(FlaskForm):
         self.populate_obj(job)
         job.save()
         return job
+    def add_job(self):
+        job = Job_detail()
+        job.jobname = self.jobname.data
+        job.salary = self.salary.data
+        job.workaddress = self.workaddress.data
+        job.education = self.education.data
+        job.experience = self.experience.data
+        job.desc = self.desc.data
+        job.company_id = current_user.companydetail.id
+        job.save()
 

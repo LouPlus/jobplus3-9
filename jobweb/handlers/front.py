@@ -42,7 +42,7 @@ def login():
         else:
             login_user(user, form.remember_me.data)
             if user.is_admin: 
-                return redirect(url_for('admin.index'))  # 建立了admin/index.html页面
+                return redirect(url_for('admin.admin_index'))  # 建立了admin/index.html页面
             elif user.is_company:
                 return redirect(url_for('company.profile', company_id = user.companydetail.id))
             else:

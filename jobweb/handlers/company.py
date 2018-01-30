@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash,current_app, abort, redirect, url_for
 from jobweb.models import Job_detail, Company,User, applications, Delivery
 from flask_login import login_required, current_user
-from jobweb.forms import companyForm, baseUserForm
+from jobweb.forms import companyForm, baseUserForm, jobForm
 
 
 company = Blueprint('company', __name__, url_prefix='/companies')
@@ -90,6 +90,18 @@ def reject(delivery_id):
     delivery.save()
     flash('Sucessful', 'success')
     return redirect(url_for('company.application'))
+
+@company.route('/addJob', methods=['GET', 'POST'])
+@login_required
+def add():
+    if current_user.is_company:
+        form = jobForm()
+        if form.validate_on_submit():
+            form.add_job()
+            flash('Add sucessful', 'success')
+            return redirect(url_for('company.jobs'))
+        return render_template('company/add_job.html', form=form, company = current_user.companydetail)
+
 
 
        
