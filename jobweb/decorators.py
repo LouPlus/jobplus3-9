@@ -13,6 +13,6 @@ def role_required(role):
         return wrapper
     return decorator
 
-#company_required = role.required(User.JOBSEEKER)
+#company_required = role.required(User.COMPANY)
 admin_required = role_required(User.ADMIN)
 
