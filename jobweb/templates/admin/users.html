@@ -1,4 +1,4 @@
-{% extends "admin/base.html" %}
+{% extends "base.html" %}
 {% from "macros.html" import render_pagination %}
 
 {% block title %}
@@ -14,7 +14,7 @@ Admin - users
 </a>
 {% endblock %}
 
-{% block admin %}
+{% block body %}
 <table class="table">
   <thred>
     <tr>
@@ -39,10 +39,10 @@ Admin - users
         <td>
         # 编辑 和 禁用 操作
         <div class="btn-group" role="group">
-          <a href="{{ url_for('admin.edit_user', user_id=user_id) }}" type="bottom" class="btn btn-default" title="编辑">
+          <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" type="bottom" class="btn btn-default" title="编辑">
             <span class="glyphicon gliphicon-pencil" title="编辑" aria-hidden="true"></span>
           </a>
-          <a href="{{ url_for('admin.disable_user, user_id=user_id') }}" type="bottom" class="btn btn-default">
+          <a href="{{ url_for('admin.disable_user', user_id=user.id) }}" type="bottom" class="btn btn-default">
             {% if user.is_disable %}
               <span class="glyphicon gliphicon-ok" title="启用" aria-hiddent="true"></span>
             {% else %}
@@ -59,4 +59,4 @@ Admin - users
 
 # 使用macro渲染分页
 {{ render_pagination(pagination, 'admin.users') }}
-{{% endblock %}}
+{% endblock %}

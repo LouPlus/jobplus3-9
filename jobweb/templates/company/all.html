@@ -15,7 +15,7 @@
 				<div class='media'>
 					<div class='media-left'>
 						<a href="{{ url_for('company.detail', company_id = company.id) }}"><img width='80' height='80'
-							alt='logo' src = '/static/spotify-logo-100410746-large.png'></img></a>
+							alt='logo' src = '{{ company.logo }}'></img></a>
 						</div>
 						<div class='media-body'>
 							<h4><a href="{{ url_for('company.detail', company_id = company.id) }}"><p class='company-name'>{{ company.companyname }}</p></a></h4>

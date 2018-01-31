@@ -75,6 +75,7 @@ class CompanyEditForm(FlaskForm):
     cellphone = StringField('phone number')
     website = StringField('company site', validators=[Length(0, 64)])
     desc = StringField('description', validators=[Length(0, 100)])
+    logo = StringField('Logo')
     submit = SubmitField('submit')
 
     def update(self, company):
