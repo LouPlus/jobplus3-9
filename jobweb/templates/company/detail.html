@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block body %}
+<div class='container'>
 <div class="row">
 	<div class="col-md-2">
-		<img width="120" height="120" alt="logo" src = "/static/spotify-logo-100410746-large.png"></img>
+		<img width="120" height="120" alt="logo" src = "{{ company.logo }}"></img>
 	</div>
 	<div class="col-md-10">
 		<h3>{{ company.companyname }}<h3>
@@ -17,6 +18,10 @@
 	<div class = "page-header">
 		<h4><b>About us</b></h4>
 	</div>
+
 	<p>{{ company.desc }}</p>
+</div>
+</div>
+
 
 	{% endblock %}
