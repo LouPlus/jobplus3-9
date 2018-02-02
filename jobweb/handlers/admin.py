@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, current_app
 from jobweb.decorators import admin_required
 from jobweb.models import User
-from jobweb.forms import UserRegisterForm
+from jobweb.forms import UserRegisterForm, UserEditForm, CompanyEditForm
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
