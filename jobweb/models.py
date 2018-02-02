@@ -47,6 +47,8 @@ class User(Base,UserMixin):
     companydetail = db.relationship('Company', uselist=False)
     applied_jobs = db.relationship('Job_detail', secondary=applications)
 
+    is_disable = db.Column(db.Boolean, default=False)
+    
     def __repr__(self):
         return '<User:{}>'.format(self.name)
 
