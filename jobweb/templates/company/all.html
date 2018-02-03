@@ -29,7 +29,7 @@
 							<ul style='list-style;none;'>
 								<li>
 									<span class='glyphicon glyphicon-user'></span>
-									<a href = '#'>{{ company.release_job|length }}</a> <span> open jobs</span>
+									<a href = '{{ url_for("company.current_jobs", company_id = company.id) }}'>{{ company.release_job|length }}</a> <span> open jobs</span>
 								</li>
 								<li>
 									<span class='glyphicon glyphicon-globe'>

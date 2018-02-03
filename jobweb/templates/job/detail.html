@@ -8,11 +8,11 @@
 			<div class = "media">
 				<div class = "media-left">
 					<a href  = "{{ url_for('job.detail',job_id = job.id) }}">
-						<img width = "120" height = "120" alt = "comp" src = /static/spotify-logo-100410746-large.png/>
+						<img width = "120" height = "120" alt = "comp" src = {{ company.logo }}>
 					</a>
 				</div>
 				<div class = "media-body">
-					<h3> {{ job.title }}</h3>
+					<h3> {{ job.jobname }}</h3>
 					<p> {{ company.companyname }}</p>
 					<p> {{ job.experience }}</p>
 					<p style = "color:#ff8000;"> {{ job.salary }}</p>
