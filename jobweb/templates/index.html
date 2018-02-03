@@ -39,6 +39,7 @@
     <div class="thumbnail">
         <div class="caption">
             <a href = '{{ url_for('company.detail',company_id = company.id) }}'><p class="company__name">{{ company.companyname }}</p></a>
+            <img width = "120" height = "120" alt = "comp" src = {{ company.logo }}>
             <p class="company_description">{{ company.desc }}</p>
             <p class="company_location">{{ company.address }}</p>
             
