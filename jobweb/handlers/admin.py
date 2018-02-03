@@ -1,17 +1,18 @@
-from flask import Blueprint, render_template, request, current_app
+from flask import Blueprint, render_template, request, current_app,redirect
+from flask import url_for, flash
 from jobweb.decorators import admin_required
-from jobweb.models import User
-from jobweb.forms import UserRegisterForm, UserEditForm, CompanyEditForm
+from jobweb.models import db,User
+from jobweb.forms import UserRegisterForm, CompanyRegisterForm,UserEditForm, CompanyEditForm
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
-# admin的首页
+
 @admin.route('/')
 @admin_required
 def admin_index():
   return render_template('admin/index.html')
 
-# 实现用户管理
+
 @admin.route('/users')
 @admin_required
 def users():
@@ -54,7 +55,7 @@ def edit_user(user_id):
         form = UserEditForm(obj=user)
     if form.validate_on_submit():
         form.update(user)
-        flask('edit success', 'success')
+        flash('edit success', 'success')
         return redirect(url_for('admin.users'))
     if user.is_company:
         form.website.data = user.companydetail.website
@@ -66,12 +67,12 @@ def edit_user(user_id):
 @admin_required
 def disable_user(user_id):
     user = User.query.get_or_404(user_id)
-    if user.is_diable:
+    if user.is_disable:
         user.is_disable = False
         flash('enable user', 'success')
     else:
         user.is_disable = True
-        flask('disable user', 'success')
+        flash('disable user', 'success')
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('admin.users'))

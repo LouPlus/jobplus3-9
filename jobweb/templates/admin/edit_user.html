@@ -1,0 +1,7 @@
+{% extends "admin/index.html" %}
+{% from "macros.html" import render_form %}
+
+{% block admin %}
+<h4>edit{% if user.is_company %}company{% else %}jobseeker{% endif %}</h4>
+{{ render_form(form, url_for('admin.edit_user')) }}
+{% endblock %}

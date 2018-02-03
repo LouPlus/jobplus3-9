@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "admin/index.html" %}
 {% from "macros.html" import render_pagination %}
 
 {% block title %}
@@ -6,17 +6,20 @@ Admin - users
 {% endblock %}
 
 {% block operation %}
-
-# 添加按钮： 添加求职者 和 *添加企业 的按钮
-<a href="{{ url_for('admin.create_user') }}" type="buttom" class="btn btn-primary">
+<a href="{{ url_for('admin.create_user') }}" type="button" class="btn btn-primary">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
   adduser
+</a>
+
+<a href="{{ url_for('admin.create_company') }}" type="button" class="btn btn-primary">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"</span>
+  addcompany
 </a>
 {% endblock %}
 
 {% block body %}
 <table class="table">
-  <thred>
+  <thead>
     <tr>
       <th>ID</th>
       <th>邮箱</th>
@@ -33,30 +36,26 @@ Admin - users
       <tr>
         <td>{{ user.id }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td>
+        <td>{% if user.is_company  %}company{% elif user.is_admin %}admin{% else %}jobseeker{% endif %}</td>
+
         <td>{{ user.username }}</td>
         <td>{{ user.cellphone }}</td>
         <td>
-        # 编辑 和 禁用 操作
+       
         <div class="btn-group" role="group">
-          <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" type="bottom" class="btn btn-default" title="编辑">
-            <span class="glyphicon gliphicon-pencil" title="编辑" aria-hidden="true"></span>
+          <a href="{{ url_for('admin.edit_user', user_id=user.id) }}" type="button" class="btn btn-default" title="编辑">
           </a>
-          <a href="{{ url_for('admin.disable_user', user_id=user.id) }}" type="bottom" class="btn btn-default">
-            {% if user.is_disable %}
-              <span class="glyphicon gliphicon-ok" title="启用" aria-hiddent="true"></span>
-            {% else %}
-              <span class="glyphicon gliphicon-off" title="禁用" aria-hiddent="true"></span>
-            {% endif %}
+          <a href="{{ url_for('admin.disable_user', user_id=user.id) }}" type="button" class="btn btn-default">
+            {% if user.is_disable %}enable user{% else %}disable user{% endif %}
           </a>
         </div>
         </td>
       </tr>
       {% endfor %}
     </tbody>
-  </thred>
+  </thead>
 </table>
 
-# 使用macro渲染分页
+
 {{ render_pagination(pagination, 'admin.users') }}
 {% endblock %}
