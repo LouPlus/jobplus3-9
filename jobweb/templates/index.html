@@ -2,18 +2,38 @@
 
 {% block title %}Home{% endblock %}
 
-{% block body %}
+{% block head %}
 <div class="jumbotron">
 	<div class='container'>
 		<h1>JobPlus</h1>
 		<p> Your dream starts here</p>
 	</div>
 </div>
+{% endblock %}
 
-<div class="page-header">
+<!--<div class="page-header">
 	<h2> New release jobs</h2>
 </div>
+-->
 
+{% block body %}
+<ul class="nav nav-tabs list-title">
+  <li role="presentation" class="active"><a href="#">New release jobs</a></li>
+</ul>
+
+<p class="list-more">
+<a href="#" class="btn btn-success btn-lg list-more-btn">See More</a>
+</p>
+
+<ul class="nav nav-tabs list-title">
+    <li role="presentation" class="active"><a href="#">New Companies</a></li>
+</ul>
+
+<p class="list-more">
+<a href="#" class="btn btn-success btn-lg list-more-btn">See More</a>
+</p>
+{% endblock %}
+<!--
 <div class="row">
   {% for job in jobs %}
   <div class="col-sm-6 col-md-4 job">
@@ -48,4 +68,5 @@
   </div>
   {% endfor %}
 </div>
-{% endblock %}
+-->
+
