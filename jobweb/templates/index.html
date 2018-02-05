@@ -11,28 +11,16 @@
 </div>
 
 
-<div class="page-header">
+<!--<div class="page-header">
 	<h2> New release jobs</h2>
 </div>
+-->
 
 
-
-<!--<ul class="nav nav-tabs list-title">
+<ul class="nav nav-tabs list-title">
   <li role="presentation" class="active"><a href="#">New release jobs</a></li>
 </ul>
 
-<p class="list-more">
-<a href="#" class="btn btn-success btn-lg list-more-btn">See More</a>
-</p>
-
-<ul class="nav nav-tabs list-title">
-    <li role="presentation" class="active"><a href="#">New Companies</a></li>
-</ul>
-
-<p class="list-more">
-<a href="#" class="btn btn-success btn-lg list-more-btn">See More</a>
-</p>
- -->
 
 <div class="row">
   {% for job in jobs %}
@@ -49,13 +37,18 @@
   </div>
   {% endfor %}
 </div>
-<p classs="list-more">
+<p class="list-more">
 <a href="{{ url_for('job.all') }}" class="btn btn-success btn-lg list-more-btn">See More</a>
 </p>
 
+<!--
 <div class = "page-header">
   <h1> New Companies </h1>
 </div>
+-->
+<ul class="nav nav-tabs list-title">
+    <li role="presentation" class="active"><a href="#">New Companies</a></li>
+</ul>
 <div class="row">
   {% for company in companies %}
   <div class="col-sm-6 col-md-4 company">
@@ -71,7 +64,7 @@
   </div>
   {% endfor %}
 </div>
-<p classs="list-more">
+<p class="list-more">
   <a href="{{ url_for('company.all') }}" class="btn btn-success btn-lg list-more-btn">See More</a>
 </p>
 {% endblock %}

@@ -5,7 +5,7 @@
 Admin - users
 {% endblock %}
 
-{% block operation %}
+{% block body %}
 <a href="{{ url_for('admin.create_user') }}" type="button" class="btn btn-primary">
   <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
   adduser
@@ -15,9 +15,7 @@ Admin - users
   <span class="glyphicon glyphicon-plus" aria-hidden="true"</span>
   addcompany
 </a>
-{% endblock %}
 
-{% block body %}
 <table class="table">
   <thead>
     <tr>
@@ -25,10 +23,10 @@ Admin - users
       <th>邮箱</th>
       <th>用户类型</th>
       <th>姓名</th>
-      #<th>状态</th>
+      <th>状态</th>
       <th>电话</th>
-      #<th>企业名称</th>
-      #<th>企业网站</th>
+      <th>企业名称</th>
+      <th>企业网站</th>
       <th>操作</th>
     </tr>
     <tbody>
