@@ -159,7 +159,7 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember me')
     submit = SubmitField('Submit')
 
-    def validae_email(self, field):
+    def validate_email(self, field):
         if field.data and not User.query.filter_by(email=field.data).first():
             raise ValidationError('email not register')
     def validate_password(self, field):

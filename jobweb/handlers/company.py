@@ -73,7 +73,7 @@ def application():
 @login_required
 def accept(delivery_id):
     delivery = Delivery.query.get_or_404(delivery_id)
-    if not current_user.id == delivery.company_id:
+    if not current_user.companydetail.id == delivery.company_id:
         abort(404)
     delivery.status = 3
     delivery.save()
@@ -84,7 +84,7 @@ def accept(delivery_id):
 @login_required
 def reject(delivery_id):
     delivery = Delivery.query.get_or_404(delivery_id)
-    if not current_user.id == delivery.company_id:
+    if not current_user.companydetail.id == delivery.company_id:
         abort(404)
     delivery.status = 2
     delivery.save()
